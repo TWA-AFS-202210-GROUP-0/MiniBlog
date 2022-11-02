@@ -10,9 +10,10 @@
     [ApiController]
     [Route("[controller]")]
     public class ArticleController : ControllerBase
-    { 
+    {
         private IArticleService _articleService;
-        public ArticleController(IArticleStore articleStore, IUserStore userStore, IArticleService articleService)
+        
+        public ArticleController(IArticleService articleService)
         {
             _articleService = articleService;
         }
@@ -34,7 +35,5 @@
         {
             return _articleService.GetByID(id);
         }
-
-        
     }
 }

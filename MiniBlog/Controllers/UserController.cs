@@ -9,19 +9,16 @@ namespace MiniBlog.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IArticleStore _articleStore;
-        private readonly IUserStore _userStore;
         private IUserService _userService;
-        public UserController(IArticleStore articleStore, IUserStore userStore, IUserService userService)
+        
+        public UserController(IUserService userService)
         {
-            _articleStore = articleStore;
-            _userStore = userStore;
             _userService = userService;
         }
+
         [HttpPost]
         public ActionResult<User> Register(User user)
         {
-            
 
             return Created($"/user/{user.Name}", _userService.Register(user));
         }
@@ -41,25 +38,13 @@ namespace MiniBlog.Controllers
         [HttpDelete]
         public User Delete(string name)
         {
-            var foundUser = _userStore.GetAll().FirstOrDefault(_ => _.Name == name);
-            if (foundUser != null)
-            {
-                _userStore.Delete(foundUser);
-                var articles = _articleStore.GetAll()
-                    .Where(article => article.UserName == foundUser.Name)
-                    .ToList();
-                articles.ForEach(article => _articleStore.Delete(article));
-            }
-
-            return foundUser;
-        }
+            return _userService.Delete(name);
+        } 
 
         [HttpGet("{name}")]
         public User GetByName(string name)
         {
             return _userService.GetByName(name);
         }
-
-        
     }
 }

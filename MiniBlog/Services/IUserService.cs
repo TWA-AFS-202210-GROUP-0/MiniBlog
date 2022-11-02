@@ -8,5 +8,6 @@
         List<User> GetAll();
         User Update(User user);
         User GetByName(string name);
+        User Delete(string name);
     }
 }
