@@ -5,5 +5,6 @@
     public interface IUserService
     {
         User Register(User user);
+        List<User> GetAll();
     }
 }
