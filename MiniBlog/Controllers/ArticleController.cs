@@ -44,7 +44,7 @@
         public Article GetById(Guid id)
         {
             var foundArticle =
-                ArticleStoreWillReplaceInFuture.Instance.GetAll().FirstOrDefault(article => article.Id == id);
+                _articleStore.GetAll().FirstOrDefault(article => article.Id == id);
             return foundArticle;
         }
     }

@@ -8,6 +8,14 @@ namespace MiniBlog.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
+
+        private IArticleStore _articleStore;
+
+        public UserController(IArticleStore articleStore)
+        {
+            _articleStore = articleStore;
+        }
+
         [HttpPost]
         public User Register(User user)
         {
@@ -44,10 +52,11 @@ namespace MiniBlog.Controllers
             if (foundUser != null)
             {
                 UserStoreWillReplaceInFuture.Instance.Delete(foundUser);
-                var articles = ArticleStoreWillReplaceInFuture.Instance.GetAll()
+                var tmp = _articleStore.GetAll();
+                var articles = _articleStore.GetAll()
                     .Where(article => article.UserName == foundUser.Name)
                     .ToList();
-                articles.ForEach(article => ArticleStoreWillReplaceInFuture.Instance.Delete(article));
+                articles.ForEach(article => _articleStore.Delete(article));
             }
 
             return foundUser;
