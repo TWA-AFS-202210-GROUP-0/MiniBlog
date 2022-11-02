@@ -18,7 +18,7 @@
         private IArticleStore _articleStore = new MockArticleStore();
         public ArticleControllerTest()
         {
-            UserStoreWillReplaceInFuture.Instance.Init();
+            //_userStore.Init();
             //_articleStore.Init();
             _articleStore.Save(new Article(null, "Happy new year", "Happy 2021 new year"));
             _articleStore.Save(new Article(null, "Happy Halloween", "Halloween is coming"));
