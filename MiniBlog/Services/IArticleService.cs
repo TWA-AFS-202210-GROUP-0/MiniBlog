@@ -4,6 +4,7 @@
 
     public interface IArticleService
     {
-        public Article Create(Article article);
+        Article Create(Article article);
+        List<Article> List();
     }
 }
