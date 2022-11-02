@@ -2,9 +2,10 @@ namespace MiniBlog.Stores
 {
     using MiniBlog.Model;
 
-    public class ArticleStoreWillReplaceInFuture
+
+    public class ArticleStoreWillReplaceInFuture : IArticleStore
     {
-        private List<Article> articles;
+        private List<Article> articles = new List<Article>();
 
         private ArticleStoreWillReplaceInFuture()
         {
