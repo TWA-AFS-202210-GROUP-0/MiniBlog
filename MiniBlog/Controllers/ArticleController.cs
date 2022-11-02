@@ -11,9 +11,9 @@
     [Route("[controller]")]
     public class ArticleController : ControllerBase
     {
-        private IArticleService _articleService;
+        private ArticleService _articleService;
         
-        public ArticleController(IArticleService articleService)
+        public ArticleController(ArticleService articleService)
         {
             _articleService = articleService;
         }

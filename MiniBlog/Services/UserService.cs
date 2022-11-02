@@ -3,7 +3,7 @@ using MiniBlog.Stores;
 
 namespace MiniBlog.Services
 {
-    public class UserService : IUserService
+    public class UserService
     {
         private IArticleStore _articleStore;
         private IUserStore _userStore;
