@@ -10,14 +10,10 @@
     [ApiController]
     [Route("[controller]")]
     public class ArticleController : ControllerBase
-    {
-        private readonly IArticleStore _articleStore;
-        private readonly IUserStore _userStore;
+    { 
         private IArticleService _articleService;
         public ArticleController(IArticleStore articleStore, IUserStore userStore, IArticleService articleService)
         {
-            _articleStore = articleStore;
-            _userStore = userStore;
             _articleService = articleService;
         }
 
