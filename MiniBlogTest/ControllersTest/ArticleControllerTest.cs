@@ -13,12 +13,9 @@
     [Collection("IntegrationTest")]
     public class ArticleControllerTest
     {
-        private IArticleStore  articleStore;
+        private IArticleStore  articleStore = new ArticleStoreContext();
         public ArticleControllerTest()
         {
-            UserStoreWillReplaceInFuture.Instance.Init();
-
-            articleStore = new ArticleStoreContext();
             articleStore.Save(new Article(null, "Happy new year", "Happy 2021 new year"));
             articleStore.Save(new Article(null, "Happy Halloween", "Halloween is coming"));
 

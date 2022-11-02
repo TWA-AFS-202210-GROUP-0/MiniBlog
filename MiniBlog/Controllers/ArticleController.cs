@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
     using MiniBlog.Model;
+    using MiniBlog.Services;
     using MiniBlog.Stores;
 
     [ApiController]
@@ -12,10 +13,12 @@
     {
         private readonly IArticleStore _articleStore;
         private readonly IUserStore _userStore;
-        public ArticleController(IArticleStore articleStore, IUserStore userStore)
+        private IArticleService _articleService;
+        public ArticleController(IArticleStore articleStore, IUserStore userStore, IArticleService articleService)
         {
             _articleStore = articleStore;
             _userStore = userStore;
+            _articleService = articleService;
         }
 
         [HttpGet]
@@ -27,17 +30,7 @@
         [HttpPost]
         public ActionResult<Article> Create(Article article)
         {
-            if (article.UserName != null)
-            {
-                if (!_userStore.GetAll().Exists(_ => article.UserName == _.Name))
-                {
-                    _userStore.Save(new User(article.UserName));
-                }
-
-                _articleStore.Save(article);
-            }
-
-            return Created($"/article/{article.Id}", article);
+             return Created($"/article/{article.Id}", _articleService.Create(article));
         }
 
         [HttpGet("{id}")]
