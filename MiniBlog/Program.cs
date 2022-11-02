@@ -1,3 +1,4 @@
+using MiniBlog.Services;
 using MiniBlog.Stores;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IArticleStore, ArticleControllerContext>();
 builder.Services.AddSingleton<IUserStore, UserControllerContext>();
+builder.Services.AddSingleton<IArticleService, ArticleService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
