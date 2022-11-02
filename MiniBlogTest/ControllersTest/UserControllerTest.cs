@@ -13,6 +13,9 @@ namespace MiniBlogTest.ControllerTest
     [Collection("IntegrationTest")]
     public class UserControllerTest
     {
+
+        private IUserStore _userStore = new MockUserStore();
+
         public UserControllerTest()
             : base()
 
@@ -150,10 +153,16 @@ namespace MiniBlogTest.ControllerTest
             await client.PostAsync("/article", registerUserContent);
         }
 
-        private static HttpClient GetClient()
+        private  HttpClient GetClient()
         {
             var factory = new WebApplicationFactory<Program>();
-            return factory.CreateClient();
+
+            var client = factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services => services.AddSingleton(serviceProvider => _userStore));
+            }).CreateClient();
+
+            return client;
         }
     }
 }

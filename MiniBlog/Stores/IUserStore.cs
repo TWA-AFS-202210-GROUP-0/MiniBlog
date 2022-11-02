@@ -7,7 +7,5 @@ namespace MiniBlog.Stores
         public List<User> GetAll();
         public User Save(User user);
         public bool Delete(User user);
-
-        public void Init();
     }
 }

@@ -4,24 +4,21 @@ namespace MiniBlog.Stores
 {
     public class MockUserStore : IUserStore
     {
+        private List<User> users = new List<User>();
         public bool Delete(User user)
         {
-            throw new NotImplementedException();
+            return this.users.Remove(user);
         }
 
         public List<User> GetAll()
         {
-            throw new NotImplementedException();
-        }
-
-        public void Init()
-        {
-            throw new NotImplementedException();
+            return this.users;
         }
 
         public User Save(User user)
         {
-            throw new NotImplementedException();
+            this.users.Add(user);
+            return user;
         }
     }
 }
