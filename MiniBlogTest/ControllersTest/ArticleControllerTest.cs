@@ -62,7 +62,6 @@
         [Fact]
         public async void Should_create_article_and_register_user_correct()
         {
-            GetClient();
             var client = GetClient();
             string userNameWhoWillAdd = "Tom";
             string articleContent = "What a good day today!";
