@@ -6,5 +6,6 @@
     {
         Article Create(Article article);
         List<Article> List();
+        Article GetByID(Guid id);
     }
 }
