@@ -12,10 +12,12 @@
     {
 
         private IArticleStore _articleStore;
+        private IUserStore _userStore;
 
-        public ArticleController(IArticleStore articleStore)
+        public ArticleController(IArticleStore articleStore, IUserStore userStore)
         {
             _articleStore = articleStore;
+            _userStore = userStore;
         }
 
         [HttpGet]
@@ -29,9 +31,9 @@
         {
             if (article.UserName != null)
             {
-                if (!UserStoreWillReplaceInFuture.Instance.GetAll().Exists(_ => article.UserName == _.Name))
+                if (!_userStore.GetAll().Exists(_ => article.UserName == _.Name))
                 {
-                    UserStoreWillReplaceInFuture.Instance.Save(new User(article.UserName));
+                    _userStore.Save(new User(article.UserName));
                 }
 
                 _articleStore.Save(article);
