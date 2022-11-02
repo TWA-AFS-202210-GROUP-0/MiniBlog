@@ -38,8 +38,6 @@ namespace MiniBlog.Controllers
             return _userService.Update(user);
         }
 
-        
-
         [HttpDelete]
         public User Delete(string name)
         {
@@ -59,9 +57,9 @@ namespace MiniBlog.Controllers
         [HttpGet("{name}")]
         public User GetByName(string name)
         {
-            return UserStoreWillReplaceInFuture.Instance.GetAll().FirstOrDefault(_ =>
-                string.Equals(_.Name, name, StringComparison.CurrentCultureIgnoreCase)) ?? throw new
-                InvalidOperationException();
+            return _userService.GetByName(name);
         }
+
+        
     }
 }

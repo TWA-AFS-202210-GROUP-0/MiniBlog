@@ -7,5 +7,6 @@
         User Register(User user);
         List<User> GetAll();
         User Update(User user);
+        User GetByName(string name);
     }
 }
