@@ -4,7 +4,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<IArticleStore, ArticleStoreContext>();
-builder.Services.AddSingleton<IUserStore, UserStore>();
+builder.Services.AddSingleton<IUserStore, UserStoreContext>();
+builder.Services.AddSingleton<IArticleService, ArticleService>();
+builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -14,7 +14,7 @@
     public class ArticleControllerTest
     {
         private IArticleStore articleStore = new ArticleStoreContext();
-        private IUserStore userStore = new UserStore();
+        private IUserStore userStore = new UserStoreContext();
         public ArticleControllerTest()
         {
             this.articleStore.Save(new Article(null, "Happy new year", "Happy 2021 new year"));

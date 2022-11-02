@@ -14,7 +14,7 @@ namespace MiniBlogTest.ControllerTest
     public class UserControllerTest
     {
         private IArticleStore articleStore = new ArticleStoreContext();
-        private IUserStore userStore = new UserStore();
+        private IUserStore userStore = new UserStoreContext();
         public UserControllerTest()
         {
             //UserStoreWillReplaceInFuture.Instance.Init();

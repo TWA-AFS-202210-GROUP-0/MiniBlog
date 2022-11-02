@@ -10,65 +10,67 @@ namespace MiniBlog.Controllers
     {
         private IArticleStore articleStore;
         private IUserStore userStore;
-        public UserController(IArticleStore articleStore, IUserStore userStore)
+        private IUserService userService;
+        public UserController(IArticleStore articleStore, IUserStore userStore, IUserService userService)
         {
             this.articleStore = articleStore;
             this.userStore = userStore;
+            this.userService = userService;
         }
 
         [HttpPost]
         public ActionResult<User> Register(User user)
         {
-            if (!userStore.GetAll().Exists(_ => user.Name.ToLower() == _.Name.ToLower()))
-            {
-                userStore.Save(user);
-            }
+            var newUser = this.userService.RegisterUser(user);
 
             var actionName = nameof(GetByName);
             var routeValue = new { name = user.Name };
-            return CreatedAtAction(actionName, routeValue, user);
+            return newUser != null ? CreatedAtAction(actionName, routeValue, user) : StatusCode(500);
         }
 
         [HttpGet]
-        public List<User> GetAll()
+        public ActionResult<List<User>> GetAll()
         {
-            return userStore.GetAll();
+            var users = this.userService.GetAllUsers();
+            return users != null ? Ok(users) : NoContent();
         }
 
         [HttpPut]
-        public User Update(User user)
+        public ActionResult<User> Update(User user)
         {
-            var foundUser = userStore.GetAll().FirstOrDefault(_ => _.Name == user.Name);
-            if (foundUser != null)
-            {
-                foundUser.Email = user.Email;
-            }
+            var foundUser = userService.UpdateUserInfo(user);
 
-            return foundUser;
+            return foundUser != null ? Ok(User) : NotFound();
         }
 
         [HttpDelete]
-        public User Delete(string name)
+        public ActionResult<User> Delete(string name)
         {
-            var foundUser = userStore.GetAll().FirstOrDefault(_ => _.Name == name);
-            if (foundUser != null)
+            User foundUser = null;
+            try
             {
-                userStore.Delete(foundUser);
-                var articles = articleStore.GetAll()
-                    .Where(article => article.UserName == foundUser.Name)
-                    .ToList();
-                articles.ForEach(article => articleStore.Delete(article));
+                foundUser = this.userService.DeleteUser(name);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
             }
 
-            return foundUser;
+            return foundUser != null ? Ok(foundUser) : NotFound(foundUser);
         }
 
         [HttpGet("{name}")]
-        public User GetByName(string name)
+        public ActionResult<User> GetByName(string name)
         {
-            return userStore.GetAll().FirstOrDefault(_ =>
-                string.Equals(_.Name, name, StringComparison.CurrentCultureIgnoreCase)) ?? throw new
-                InvalidOperationException();
+            User user = null;
+            try
+            {
+                user = this.userService.GetByName(name);
+            }catch (InvalidOperationException ex)
+            {
+                return StatusCode(500);
+            }
+            return user != null ? Ok(user) : NotFound(user);
         }
     }
 }

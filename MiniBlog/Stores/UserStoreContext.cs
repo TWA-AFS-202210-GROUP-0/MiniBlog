@@ -2,7 +2,7 @@
 
 namespace MiniBlog.Stores
 {
-    public class UserStore : IUserStore
+    public class UserStoreContext : IUserStore
     {
         private List<User> users = new List<User>();
 

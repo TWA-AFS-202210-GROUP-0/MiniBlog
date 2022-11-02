@@ -12,41 +12,37 @@
     {
         private IArticleStore articleStore;
         private IUserStore userStore;
+        private IArticleService articleService;
 
-        public ArticleController(IArticleStore articleStore, IUserStore userStore)
+        public ArticleController(IArticleStore articleStore, IUserStore userStore, IArticleService articleService)
         {
             this.articleStore = articleStore;
             this.userStore = userStore;
+            this.articleService = articleService;
         }
 
         [HttpGet]
-        public List<Article> List()
+        public ActionResult<List<Article>> List()
         {
-            return this.articleStore.GetAll();
+            var articles = this.articleService.GetAllArticles();
+            return articles == null ? NoContent() : Ok(articles);
         }
 
         [HttpPost]
         public ActionResult<Article> Create(Article article)
         {
-            if (article.UserName != null)
-            {
-                if (!this.userStore.GetAll().Exists(_ => article.UserName == _.Name))
-                {
-                    this.userStore.Save(new User(article.UserName));
-                }
+            var newArticle = this.articleService.CreateArticle(article);
 
-                this.articleStore.Save(article);
-            }
-
-            return new CreatedResult($"/articles/{article.Id}", article);
+            var actionName = nameof(GetById);
+            var routeValue = new { id = newArticle.Id };
+            return newArticle != null ? CreatedAtAction(actionName, routeValue, newArticle) : StatusCode(500);
         }
 
         [HttpGet("{id}")]
-        public Article GetById(Guid id)
+        public ActionResult<Article> GetById(Guid id)
         {
-            var foundArticle =
-                this.articleStore.GetAll().FirstOrDefault(article => article.Id == id);
-            return foundArticle;
+            var foundArticle = this.articleService.GetArticleById(id);
+            return foundArticle == null ? NotFound() : Ok(foundArticle);
         }
     }
 }
