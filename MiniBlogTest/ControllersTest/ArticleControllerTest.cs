@@ -4,6 +4,7 @@
     using System.Net.Mime;
     using System.Text;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.Extensions.DependencyInjection;
     using MiniBlog.Model;
     using MiniBlog.Stores;
     using Moq;
@@ -13,10 +14,14 @@
     [Collection("IntegrationTest")]
     public class ArticleControllerTest
     {
+
+        private IArticleStore _articleStore = new MockArticleStore();
         public ArticleControllerTest()
         {
             UserStoreWillReplaceInFuture.Instance.Init();
-            ArticleStoreWillReplaceInFuture.Instance.Init();
+            //ArticleStoreWillReplaceInFuture.Instance.Init();
+            _articleStore.Save(new Article(null, "Happy new year", "Happy 2021 new year"));
+            _articleStore.Save(new Article(null, "Happy Halloween", "Halloween is coming"));
         }
 
         [Fact]
@@ -88,10 +93,13 @@
             Assert.Equal("anonymous@unknow.com", users[0].Email);
         }
 
-        private static HttpClient GetClient()
+        private HttpClient GetClient()
         {
             var factory = new WebApplicationFactory<Program>();
-            return factory.CreateClient();
+            return factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services => services.AddSingleton(serviceProvider => this._articleStore));
+            }).CreateClient();
         }
     }
 }

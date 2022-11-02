@@ -4,19 +4,22 @@ namespace MiniBlog.Stores
 {
     public class MockArticleStore : IArticleStore
     {
-        public bool Delete(Article articles)
+        public List<Article> Articles { get; set; } = new List<Article>();
+
+        public Article Save(Article article)
         {
-            throw new NotImplementedException();
+            this.Articles.Add(article);
+            return article;
         }
 
         public List<Article> GetAll()
         {
-            throw new NotImplementedException();
+            return this.Articles;
         }
 
-        public Article Save(Article article)
+        public bool Delete(Article articles)
         {
-            throw new NotImplementedException();
+            return this.Articles.Remove(articles);
         }
     }
 }
