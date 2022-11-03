@@ -26,7 +26,7 @@
         [HttpPost]
         public ActionResult<Article> Create(Article article)
         {
-             return Created($"/article/{article.Id}", _articleService.Create(article));
+            return Created($"/article/{article.Id}", _articleService.Create(article));
         }
 
         [HttpGet("{id}")]

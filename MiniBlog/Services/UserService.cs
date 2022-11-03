@@ -42,7 +42,7 @@ namespace MiniBlog.Services
 
         public User GetByName(string name)
         {
-            return UserStoreWillReplaceInFuture.Instance.GetAll().FirstOrDefault(_ =>
+            return _userStore.GetAll().FirstOrDefault(_ =>
                             string.Equals(_.Name, name, StringComparison.CurrentCultureIgnoreCase)) ?? throw new
                             InvalidOperationException();
         }

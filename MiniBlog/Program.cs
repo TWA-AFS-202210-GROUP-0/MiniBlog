@@ -8,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IArticleStore, ArticleStoreContext>();
 builder.Services.AddSingleton<IUserStore, UserStoreContext>();
-builder.Services.AddSingleton<ArticleService>();
-builder.Services.AddSingleton<UserService>();
+builder.Services.AddTransient<ArticleService>();
+builder.Services.AddTransient<UserService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
