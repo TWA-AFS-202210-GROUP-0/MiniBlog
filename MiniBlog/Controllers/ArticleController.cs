@@ -5,7 +5,6 @@
     using Microsoft.AspNetCore.Mvc;
     using MiniBlog.Model;
     using MiniBlog.Services;
-    using MiniBlog.Stores;
 
     [ApiController]
     [Route("[controller]")]

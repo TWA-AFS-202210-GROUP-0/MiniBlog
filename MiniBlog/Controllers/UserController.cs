@@ -1,10 +1,9 @@
-using MiniBlog.Model;
-using MiniBlog.Stores;
-using Microsoft.AspNetCore.Mvc;
-using MiniBlog.Services;
-
 namespace MiniBlog.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using MiniBlog.Model;
+    using MiniBlog.Services;
+
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
