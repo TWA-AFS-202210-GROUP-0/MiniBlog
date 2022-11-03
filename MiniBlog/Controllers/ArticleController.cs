@@ -1,4 +1,7 @@
-﻿namespace MiniBlog.Controllers
+﻿using System.Reflection.Metadata.Ecma335;
+using MiniBlog.Services;
+
+namespace MiniBlog.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -10,34 +13,39 @@
     [Route("[controller]")]
     public class ArticleController : ControllerBase
     {
-        [HttpGet]
-        public List<Article> List()
+        private IArticleService _articleService;
+
+        public ArticleController(IArticleService articleService)
         {
-            return ArticleStoreWillReplaceInFuture.Instance.GetAll();
+            this._articleService = articleService;
+        }
+
+        [HttpGet]
+        public ActionResult<List<Article>> List()
+        {
+            return Ok(this._articleService.GetAllArticles());
         }
 
         [HttpPost]
-        public Article Create(Article article)
+        public ActionResult<Article> Create(Article article)
         {
-            if (article.UserName != null)
-            {
-                if (!UserStoreWillReplaceInFuture.Instance.GetAll().Exists(_ => article.UserName == _.Name))
-                {
-                    UserStoreWillReplaceInFuture.Instance.Save(new User(article.UserName));
-                }
-
-                ArticleStoreWillReplaceInFuture.Instance.Save(article);
-            }
-
-            return article;
+            var newArticle = _articleService.CreateArticle(article);
+            return new CreatedResult($"/articles/{newArticle.Id}", newArticle);
         }
 
         [HttpGet("{id}")]
-        public Article GetById(Guid id)
+        public ActionResult<Article> GetById(Guid id)
         {
-            var foundArticle =
-                ArticleStoreWillReplaceInFuture.Instance.GetAll().FirstOrDefault(article => article.Id == id);
-            return foundArticle;
+            try
+            {
+                var articleResult = _articleService.GetArticle(id);
+                return Ok(articleResult);
+            }
+
+            catch (NullReferenceException e)
+            {
+                return NotFound(e.Message);
+            }
         }
     }
 }
