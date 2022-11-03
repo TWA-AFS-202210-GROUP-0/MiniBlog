@@ -1,6 +1,5 @@
 using MiniBlog.Model;
 using MiniBlog.Services;
-using MiniBlog.Stores;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -6,7 +6,6 @@ namespace MiniBlog.Controllers
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
     using MiniBlog.Model;
-    using MiniBlog.Stores;
 
     [ApiController]
     [Route("[controller]")]

@@ -7,7 +7,6 @@ namespace MiniBlogTest.ControllerTest
     using System.Text;
     using Microsoft.AspNetCore.Mvc.Testing;
     using MiniBlog.Model;
-    using MiniBlog.Stores;
     using Newtonsoft.Json;
     using Xunit;
 
@@ -19,8 +18,6 @@ namespace MiniBlogTest.ControllerTest
             : base()
 
         {
-            UserStoreWillReplaceInFuture.Instance.Init();
-            ArticleStoreWillReplaceInFuture.Instance.Init();
             _userStore = new UserStoreContext();
         }
 

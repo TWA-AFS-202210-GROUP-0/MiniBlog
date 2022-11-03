@@ -7,7 +7,6 @@ namespace MiniBlogTest.ControllerTest
     using System.Text;
     using Microsoft.AspNetCore.Mvc.Testing;
     using MiniBlog.Model;
-    using MiniBlog.Stores;
     using Newtonsoft.Json;
     using Xunit;
 
@@ -18,8 +17,6 @@ namespace MiniBlogTest.ControllerTest
         public ArticleControllerTest()
         {
             _articleStore = new ArticleStoreContext();
-            UserStoreWillReplaceInFuture.Instance.Init();
-            ArticleStoreWillReplaceInFuture.Instance.Init();
             _articleStore.Save(new Article(null, "Happy new year", "Happy 2021 new year"));
             _articleStore.Save(new Article(null, "Happy Halloween", "Halloween is coming"));
         }
