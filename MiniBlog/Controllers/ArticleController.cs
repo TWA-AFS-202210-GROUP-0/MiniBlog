@@ -26,7 +26,11 @@
         [HttpPost]
         public ActionResult<Article> Create(Article article)
         {
-            return Created($"/article/{article.Id}", _articleService.Create(article));
+            var newArticle = _articleService.Create(article);
+            var actionName = nameof(GetById);
+            var routeValue = new { id = newArticle.Id };
+            return CreatedAtAction(actionName, routeValue, newArticle);
+
         }
 
         [HttpGet("{id}")]

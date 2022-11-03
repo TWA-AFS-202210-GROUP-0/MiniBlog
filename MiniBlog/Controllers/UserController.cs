@@ -19,7 +19,10 @@ namespace MiniBlog.Controllers
         public ActionResult<User> Register(User user)
         {
 
-            return Created($"/user/{user.Name}", _userService.Register(user));
+            var newUser = _userService.Register(user);
+            var actionName = nameof(GetByName);
+            var routeValue = new { name = user.Name };
+            return CreatedAtAction(actionName, routeValue, newUser);
         }
 
         [HttpGet]
