@@ -10,34 +10,35 @@
     [Route("[controller]")]
     public class ArticleController : ControllerBase
     {
-        [HttpGet]
-        public List<Article> List()
+        private IArticleService articleService;
+
+        public ArticleController(IArticleService articleService)
         {
-            return ArticleStoreWillReplaceInFuture.Instance.GetAll();
+            this.articleService = articleService;
+        }
+
+        [HttpGet]
+        public ActionResult<List<Article>> List()
+        {
+            var articles = this.articleService.GetAllArticles();
+            return articles == null ? NoContent() : Ok(articles);
         }
 
         [HttpPost]
-        public Article Create(Article article)
+        public ActionResult<Article> Create(Article article)
         {
-            if (article.UserName != null)
-            {
-                if (!UserStoreWillReplaceInFuture.Instance.GetAll().Exists(_ => article.UserName == _.Name))
-                {
-                    UserStoreWillReplaceInFuture.Instance.Save(new User(article.UserName));
-                }
+            var newArticle = this.articleService.CreateArticle(article);
 
-                ArticleStoreWillReplaceInFuture.Instance.Save(article);
-            }
-
-            return article;
+            var actionName = nameof(GetById);
+            var routeValue = new { id = newArticle.Id };
+            return newArticle != null ? CreatedAtAction(actionName, routeValue, newArticle) : StatusCode(500);
         }
 
         [HttpGet("{id}")]
-        public Article GetById(Guid id)
+        public ActionResult<Article> GetById(Guid id)
         {
-            var foundArticle =
-                ArticleStoreWillReplaceInFuture.Instance.GetAll().FirstOrDefault(article => article.Id == id);
-            return foundArticle;
+            var foundArticle = this.articleService.GetArticleById(id);
+            return foundArticle == null ? NotFound() : Ok(foundArticle);
         }
     }
 }
